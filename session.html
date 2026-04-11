@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lampardi05 — Журнал сессий</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=Unbounded:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/main.css">
+</head>
+<body>
+<script src="assets/auth-gate.js"></script>
+
+<div class="app">
+  <div id="layout-root"></div>
+  <main class="main">
+    <header class="doc-header">
+      <div class="doc-label">06 · Журнал сессий</div>
+      <h1 class="doc-title">Сессия 10–11.04.2026</h1>
+      <p class="doc-subtitle">Первичный аудит проекта и формирование документации.</p>
+    </header>
+    <div class="prose" id="content">Загрузка…</div>
+    <div id="main-footer"></div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="assets/layout.js"></script>
+<script src="assets/doc-loader.js"></script>
+<script>
+  Lampardi.renderLayout({ active: 'session' });
+  Lampardi.loadMarkdown('sessions/2026-04-10.md');
+</script>
+</body>
+</html>

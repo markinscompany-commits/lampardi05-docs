@@ -1,0 +1,471 @@
+/* ============================================================
+   Markins — shared stylesheet for Lampardi05 project docs
+   Dark theme, Unbounded + Commissioner, accent #D5CDBA
+   ============================================================ */
+
+:root {
+  --bg-0: #09090B;
+  --bg-1: #0F0F12;
+  --bg-2: #17171C;
+  --bg-3: #1F1F26;
+  --bg-4: #272730;
+  --accent: #D5CDBA;
+  --accent-hover: #E8E2D3;
+  --accent-dim: rgba(213, 205, 186, 0.6);
+  --fg-100: rgba(255,255,255, 0.95);
+  --fg-70: rgba(255,255,255, 0.65);
+  --fg-45: rgba(255,255,255, 0.45);
+  --fg-25: rgba(255,255,255, 0.25);
+  --fg-10: rgba(255,255,255, 0.10);
+  --fg-5: rgba(255,255,255, 0.05);
+  --green: #81C784;
+  --green-bg: rgba(129,199,132,0.12);
+  --orange: #FFB74D;
+  --orange-bg: rgba(255,183,77,0.12);
+  --red: #E57373;
+  --red-bg: rgba(229,115,115,0.12);
+  --purple: #CE93D8;
+  --purple-bg: rgba(206,147,216,0.12);
+  --blue: #64B5F6;
+  --blue-bg: rgba(100,181,246,0.12);
+  --grey: #9E9E9E;
+  --grey-bg: rgba(158,158,158,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg-0);
+  color: var(--fg-100);
+  font-family: 'Commissioner', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+body { min-height: 100vh; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--fg-100);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+/* ============================================================
+   Layout: app / sidebar / main
+   ============================================================ */
+.app {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--bg-1);
+  border-right: 1px solid var(--fg-10);
+  padding: 32px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-brand {
+  padding: 0 28px 28px;
+  border-bottom: 1px solid var(--fg-10);
+}
+
+.sidebar-brand-logo {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+}
+
+.sidebar-brand-subtitle {
+  font-size: 10px;
+  color: var(--fg-45);
+  margin-top: 6px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.sidebar-nav {
+  padding: 20px 16px;
+}
+
+.nav-title {
+  font-size: 10px;
+  color: var(--fg-45);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 12px 12px 8px;
+  font-weight: 600;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--fg-70);
+  transition: all 0.15s;
+  text-decoration: none;
+  margin-bottom: 2px;
+}
+.nav-item:hover {
+  background: var(--fg-5);
+  color: var(--fg-100);
+  text-decoration: none;
+}
+.nav-item.active {
+  background: var(--bg-3);
+  color: var(--accent);
+}
+.nav-item-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 10px;
+  color: var(--fg-45);
+  font-weight: 600;
+}
+.nav-item.active .nav-item-num { color: var(--accent-dim); }
+
+.main {
+  padding: 56px 64px 120px;
+  max-width: 980px;
+}
+
+/* ============================================================
+   Page header
+   ============================================================ */
+.doc-header {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--fg-10);
+}
+.doc-label {
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.doc-title {
+  font-size: 34px;
+  color: var(--fg-100);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.doc-subtitle {
+  font-size: 14px;
+  color: var(--fg-70);
+  max-width: 740px;
+}
+
+/* ============================================================
+   Typography for prose content
+   ============================================================ */
+.prose { max-width: 780px; }
+
+.prose h1 {
+  font-size: 26px;
+  margin-top: 48px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--fg-10);
+}
+.prose h1:first-child { margin-top: 0; }
+
+.prose h2 {
+  font-size: 20px;
+  margin-top: 40px;
+  margin-bottom: 16px;
+  color: var(--accent);
+}
+
+.prose h3 {
+  font-size: 15px;
+  margin-top: 28px;
+  margin-bottom: 12px;
+  color: var(--fg-100);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.prose h4 {
+  font-size: 13px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: var(--fg-70);
+  font-weight: 600;
+}
+
+.prose p {
+  margin-bottom: 14px;
+  color: var(--fg-100);
+  line-height: 1.65;
+}
+
+.prose p + p { margin-top: -2px; }
+
+.prose strong { color: var(--fg-100); font-weight: 600; }
+.prose em { color: var(--fg-70); font-style: italic; }
+
+.prose ul, .prose ol {
+  margin-left: 22px;
+  margin-bottom: 16px;
+}
+.prose li {
+  margin-bottom: 6px;
+  color: var(--fg-100);
+  line-height: 1.6;
+}
+.prose li::marker { color: var(--accent-dim); }
+
+.prose blockquote {
+  margin: 20px 0;
+  padding: 16px 22px;
+  background: var(--bg-1);
+  border-left: 2px solid var(--accent);
+  border-radius: 4px;
+  color: var(--fg-70);
+  font-size: 13px;
+}
+.prose blockquote p { margin-bottom: 0; }
+
+.prose code {
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  background: var(--bg-3);
+  border-radius: 3px;
+  color: var(--accent);
+}
+
+.prose pre {
+  margin: 20px 0;
+  padding: 18px 22px;
+  background: var(--bg-1);
+  border: 1px solid var(--fg-10);
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.prose pre code {
+  background: none;
+  padding: 0;
+  color: var(--fg-100);
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--fg-10);
+  margin: 36px 0;
+}
+
+/* ============================================================
+   Tables
+   ============================================================ */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: var(--bg-1);
+  border: 1px solid var(--fg-10);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.prose th {
+  background: var(--bg-3);
+  padding: 12px 16px;
+  text-align: left;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 1px solid var(--fg-10);
+}
+
+.prose td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--fg-5);
+  color: var(--fg-100);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.prose tr:last-child td { border-bottom: none; }
+.prose tr:hover { background: var(--fg-5); }
+
+/* Task list (checkboxes from markdown) */
+.prose ul li.task { list-style: none; margin-left: -22px; }
+.prose ul li.task input[type="checkbox"] {
+  margin-right: 10px;
+  accent-color: var(--accent);
+}
+
+/* ============================================================
+   Status badges — for inline text in tables
+   ============================================================ */
+.badge {
+  display: inline-block;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.badge-done { background: var(--green-bg); color: var(--green); }
+.badge-partial { background: var(--orange-bg); color: var(--orange); }
+.badge-notdone { background: var(--red-bg); color: var(--red); }
+.badge-blocked { background: var(--purple-bg); color: var(--purple); }
+.badge-unknown { background: var(--grey-bg); color: var(--grey); }
+.badge-cancelled { background: var(--fg-5); color: var(--fg-45); text-decoration: line-through; }
+
+/* ============================================================
+   Doc footer
+   ============================================================ */
+.doc-footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--fg-10);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--fg-45);
+  letter-spacing: 0.5px;
+}
+.doc-footer a { color: var(--fg-70); }
+.doc-footer a:hover { color: var(--accent); }
+
+/* ============================================================
+   Index page cards
+   ============================================================ */
+.index-intro {
+  background: var(--bg-1);
+  border: 1px solid var(--fg-10);
+  border-radius: 10px;
+  padding: 28px 32px;
+  margin-bottom: 32px;
+}
+.index-intro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+.index-intro-item {
+  padding: 14px 16px;
+  background: var(--bg-2);
+  border-radius: 6px;
+  border: 1px solid var(--fg-10);
+}
+.index-intro-item-label {
+  font-size: 10px;
+  color: var(--fg-45);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+.index-intro-item-value {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 14px;
+  color: var(--fg-100);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.doc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.doc-card {
+  background: var(--bg-1);
+  border: 1px solid var(--fg-10);
+  border-radius: 10px;
+  padding: 24px 26px;
+  transition: all 0.18s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.doc-card:hover {
+  border-color: var(--fg-25);
+  background: var(--bg-2);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.doc-card-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.doc-card-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 16px;
+  color: var(--fg-100);
+  font-weight: 500;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.doc-card-desc {
+  font-size: 12px;
+  color: var(--fg-70);
+  line-height: 1.5;
+}
+.doc-card-arrow {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 1100px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--fg-10); }
+  .sidebar-nav { display: flex; flex-wrap: wrap; gap: 4px; padding: 12px 16px; }
+  .nav-item { padding: 6px 12px; font-size: 11px; flex: 0 0 auto; }
+  .nav-title { display: none; }
+  .main { padding: 36px 24px 80px; }
+  .doc-title { font-size: 26px; }
+}
+
+/* Utility */
+.hide { display: none !important; }
+.mt-0 { margin-top: 0 !important; }
+.mb-0 { margin-bottom: 0 !important; }

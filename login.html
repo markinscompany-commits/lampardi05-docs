@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lampardi05 — доступ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=Unbounded:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/main.css">
+<style>
+.gate {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.gate-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-1);
+  border: 1px solid var(--fg-10);
+  border-radius: 14px;
+  padding: 48px 44px;
+  text-align: center;
+}
+.gate-logo {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 24px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin-bottom: 6px;
+}
+.gate-subtitle {
+  font-size: 10px;
+  color: var(--fg-45);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+.gate-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 18px;
+  color: var(--fg-100);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.gate-hint {
+  font-size: 12px;
+  color: var(--fg-70);
+  margin-bottom: 28px;
+  line-height: 1.55;
+}
+.gate-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.gate-input {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--bg-0);
+  border: 1px solid var(--fg-10);
+  border-radius: 7px;
+  font-family: 'Commissioner', sans-serif;
+  font-size: 14px;
+  color: var(--fg-100);
+  text-align: center;
+  letter-spacing: 2px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.gate-input:focus { border-color: var(--accent-dim); }
+.gate-input::placeholder { color: var(--fg-25); letter-spacing: 1px; }
+.gate-btn {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--accent);
+  border: none;
+  border-radius: 7px;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--bg-0);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.gate-btn:hover { background: var(--accent-hover); }
+.gate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.gate-error {
+  font-size: 11px;
+  color: var(--red);
+  margin-top: 10px;
+  min-height: 16px;
+  letter-spacing: 0.3px;
+}
+.gate-footer {
+  margin-top: 36px;
+  font-size: 10px;
+  color: var(--fg-25);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+
+<div class="gate">
+  <div class="gate-card">
+    <div class="gate-logo">markins</div>
+    <div class="gate-subtitle">Project Docs</div>
+    <div class="gate-title">Lampardi05</div>
+    <div class="gate-hint">Документы проекта доступны по паролю.<br>Введите код для продолжения.</div>
+    <form class="gate-form" id="gate-form" autocomplete="off">
+      <input type="password" class="gate-input" id="gate-input" placeholder="Код доступа" autofocus>
+      <button type="submit" class="gate-btn">Войти</button>
+    </form>
+    <div class="gate-error" id="gate-error">&nbsp;</div>
+    <div class="gate-footer">© markins · 2026</div>
+  </div>
+</div>
+
+<script>window.__noGate = true;</script>
+<script src="assets/auth-gate.js"></script>
+<script>
+(function () {
+  // If already authed — redirect to index.
+  if (window.LampardiAuth.isAuthed()) {
+    window.location.replace('index.html');
+    return;
+  }
+  const form = document.getElementById('gate-form');
+  const input = document.getElementById('gate-input');
+  const error = document.getElementById('gate-error');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    error.textContent = '';
+    const value = input.value.trim();
+    if (!value) return;
+    const ok = await window.LampardiAuth.tryLogin(value);
+    if (ok) {
+      window.location.replace('index.html');
+    } else {
+      error.textContent = 'Неверный код';
+      input.value = '';
+      input.focus();
+      // Shake animation
+      const card = document.querySelector('.gate-card');
+      card.animate(
+        [ { transform: 'translateX(0)' }, { transform: 'translateX(-6px)' }, { transform: 'translateX(6px)' }, { transform: 'translateX(0)' } ],
+        { duration: 260, iterations: 1 }
+      );
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lampardi05 — чек-лист проекта</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=Unbounded:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="assets/auth-gate.js"></script>
+<style>
+:root {
+  --bg-0: #09090B;
+  --bg-1: #0F0F12;
+  --bg-2: #17171C;
+  --bg-3: #1F1F26;
+  --bg-4: #272730;
+  --accent: #D5CDBA;
+  --accent-dim: rgba(213, 205, 186, 0.6);
+  --fg-100: rgba(255,255,255, 0.95);
+  --fg-70: rgba(255,255,255, 0.65);
+  --fg-45: rgba(255,255,255, 0.45);
+  --fg-25: rgba(255,255,255, 0.25);
+  --fg-10: rgba(255,255,255, 0.10);
+  --fg-5: rgba(255,255,255, 0.05);
+  --green: #81C784;
+  --green-bg: rgba(129,199,132,0.12);
+  --orange: #FFB74D;
+  --orange-bg: rgba(255,183,77,0.12);
+  --red: #E57373;
+  --red-bg: rgba(229,115,115,0.12);
+  --purple: #CE93D8;
+  --purple-bg: rgba(206,147,216,0.12);
+  --blue: #64B5F6;
+  --blue-bg: rgba(100,181,246,0.12);
+  --grey: #9E9E9E;
+  --grey-bg: rgba(158,158,158,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg-0);
+  color: var(--fg-100);
+  font-family: 'Commissioner', -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+body { min-height: 100vh; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+select, input, textarea { font-family: inherit; color: inherit; }
+h1, h2, h3, h4 { font-family: 'Unbounded', sans-serif; font-weight: 500; letter-spacing: -0.01em; }
+
+/* === LAYOUT === */
+.app {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  background: var(--bg-1);
+  border-right: 1px solid var(--fg-10);
+  padding: 32px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.sidebar-brand {
+  padding: 0 28px 28px;
+  border-bottom: 1px solid var(--fg-10);
+}
+.sidebar-brand-logo {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+}
+.sidebar-brand-subtitle {
+  font-size: 10px;
+  color: var(--fg-45);
+  margin-top: 6px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.sidebar-nav {
+  padding: 20px 16px;
+}
+.nav-title {
+  font-size: 10px;
+  color: var(--fg-45);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 12px 12px 8px;
+  font-weight: 600;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--fg-70);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  text-decoration: none;
+}
+.nav-item:hover { background: var(--fg-5); color: var(--fg-100); }
+.nav-item-progress {
+  font-size: 10px;
+  font-family: 'Unbounded', sans-serif;
+  color: var(--fg-45);
+  font-weight: 500;
+}
+.nav-item.done .nav-item-progress { color: var(--green); }
+
+/* === MAIN === */
+.main {
+  padding: 40px 56px 120px;
+  max-width: 1200px;
+}
+
+/* === HEADER === */
+.header {
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--fg-10);
+}
+.header-label {
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.header-title {
+  font-size: 32px;
+  color: var(--fg-100);
+  margin-bottom: 8px;
+}
+.header-subtitle {
+  font-size: 14px;
+  color: var(--fg-70);
+  margin-bottom: 28px;
+}
+.header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--bg-2);
+  border: 1px solid var(--fg-10);
+  color: var(--fg-100);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  letter-spacing: 0.3px;
+  transition: all 0.15s;
+}
+.btn:hover { background: var(--bg-3); border-color: var(--fg-25); }
+.btn-primary { background: var(--accent); color: var(--bg-0); border-color: var(--accent); }
+.btn-primary:hover { background: #E8E2D3; border-color: #E8E2D3; }
+.btn-danger:hover { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+
+/* === OVERALL PROGRESS === */
+.overall-progress {
+  background: var(--bg-1);
+  border: 1px solid var(--fg-10);
+  border-radius: 10px;
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.overall-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20px;
+}
+.overall-progress-label {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--fg-45);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.overall-progress-value {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.progress-bar {
+  height: 6px;
+  background: var(--fg-5);
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+}
+.progress-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+.progress-done { background: var(--green); }
+.progress-partial { background: var(--orange); }
+.progress-blocked { background: var(--purple); }
+.overall-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+.stat {
+  padding: 14px 16px;
+  background: var(--bg-2);
+  border-radius: 6px;
+  border: 1px solid var(--fg-10);
+}
+.stat-label {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--fg-45);
+  font-weight: 600;
+}
+.stat-value {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  margin-top: 6px;
+}
+.stat.done .stat-value { color: var(--green); }
+.stat.partial .stat-value { color: var(--orange); }
+.stat.notdone .stat-value { color: var(--red); }
+.stat.blocked .stat-value { color: var(--purple); }
+.stat.unknown .stat-value { color: var(--grey); }
+
+/* === SECTION === */
+.section {
+  margin-top: 32px;
+  background: var(--bg-1);
+  border: 1px solid var(--fg-10);
+  border-radius: 10px;
+  overflow: hidden;
+  scroll-margin-top: 20px;
+}
+.section-header {
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+.section-header:hover { background: var(--bg-2); }
+.section-title-group { display: flex; align-items: center; gap: 16px; }
+.section-number {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+.section-title {
+  font-size: 18px;
+  color: var(--fg-100);
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 500;
+}
+.section-description {
+  font-size: 12px;
+  color: var(--fg-45);
+  margin-top: 4px;
+}
+.section-progress {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.section-progress-text {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 12px;
+  color: var(--fg-70);
+  font-weight: 500;
+}
+.section-progress-bar {
+  width: 140px;
+  height: 4px;
+  background: var(--fg-5);
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex;
+}
+.chevron {
+  color: var(--fg-45);
+  transition: transform 0.2s;
+  font-size: 14px;
+}
+.section.collapsed .chevron { transform: rotate(-90deg); }
+.section-body {
+  border-top: 1px solid var(--fg-10);
+  padding: 8px 0;
+}
+.section.collapsed .section-body { display: none; }
+
+/* === ITEM === */
+.item {
+  display: grid;
+  grid-template-columns: 180px 1fr auto;
+  gap: 18px;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--fg-5);
+  align-items: start;
+}
+.item:last-child { border-bottom: none; }
+.item-status {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.status-select {
+  background: var(--bg-2);
+  border: 1px solid var(--fg-10);
+  border-radius: 5px;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  width: 100%;
+  color: var(--fg-100);
+  outline: none;
+}
+.status-select:focus { border-color: var(--accent-dim); }
+.status-select option { background: var(--bg-2); color: var(--fg-100); }
+.item.status-done .status-select { color: var(--green); border-color: rgba(129,199,132,0.3); background: var(--green-bg); }
+.item.status-partial .status-select { color: var(--orange); border-color: rgba(255,183,77,0.3); background: var(--orange-bg); }
+.item.status-notdone .status-select { color: var(--red); border-color: rgba(229,115,115,0.3); background: var(--red-bg); }
+.item.status-blocked .status-select { color: var(--purple); border-color: rgba(206,147,216,0.3); background: var(--purple-bg); }
+.item.status-cancelled .status-select { color: var(--fg-45); border-color: var(--fg-10); background: var(--fg-5); }
+
+.item-body { min-width: 0; }
+.item-text {
+  font-size: 13px;
+  color: var(--fg-100);
+  line-height: 1.5;
+  font-weight: 400;
+}
+.item-details {
+  font-size: 12px;
+  color: var(--fg-45);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+.item-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.tag-p0 { background: var(--red-bg); color: var(--red); }
+.tag-p1 { background: var(--orange-bg); color: var(--orange); }
+.tag-p2 { background: var(--blue-bg); color: var(--blue); }
+.tag-p3 { background: var(--grey-bg); color: var(--grey); }
+.tag-contract { background: var(--fg-5); color: var(--fg-70); border: 1px solid var(--fg-10); }
+.tag-notion { background: var(--fg-5); color: var(--fg-70); border: 1px solid var(--fg-10); }
+.tag-manual { background: var(--purple-bg); color: var(--purple); }
+
+.item-comment-wrap { margin-top: 10px; }
+.item-comment-toggle {
+  font-size: 11px;
+  color: var(--fg-45);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 0;
+  transition: color 0.15s;
+}
+.item-comment-toggle:hover { color: var(--fg-70); }
+.item-comment-toggle.has-comment { color: var(--accent); }
+.item-comment-area {
+  display: none;
+  margin-top: 8px;
+  width: 100%;
+  min-height: 60px;
+  padding: 10px 12px;
+  background: var(--bg-0);
+  border: 1px solid var(--fg-10);
+  border-radius: 5px;
+  font-size: 12px;
+  color: var(--fg-100);
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
+}
+.item-comment-area:focus { border-color: var(--accent-dim); }
+.item.comment-open .item-comment-area { display: block; }
+
+.item-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: 70px;
+}
+
+/* === SIMPLIFIED STATUS CHIP COLORS IN SIDEBAR PROGRESS === */
+
+/* === TOAST === */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: var(--bg-3);
+  color: var(--fg-100);
+  padding: 14px 22px;
+  border-radius: 6px;
+  font-size: 13px;
+  border: 1px solid var(--fg-10);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.25s;
+  pointer-events: none;
+  z-index: 1000;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.success { border-color: rgba(129,199,132,0.4); }
+.toast.error { border-color: rgba(229,115,115,0.4); }
+
+/* === FOOTER NOTE === */
+.footer-note {
+  margin-top: 48px;
+  padding: 20px 24px;
+  background: var(--bg-1);
+  border-radius: 8px;
+  border-left: 2px solid var(--accent);
+  font-size: 12px;
+  color: var(--fg-70);
+  line-height: 1.6;
+}
+.footer-note strong { color: var(--fg-100); font-weight: 500; }
+
+/* === RESPONSIVE === */
+@media (max-width: 1100px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; }
+  .main { padding: 32px 24px 80px; }
+  .item { grid-template-columns: 1fr; gap: 10px; padding: 18px 24px; }
+  .item-meta { flex-direction: row; align-items: center; }
+  .section-header { padding: 20px 24px; }
+  .section-progress-bar { display: none; }
+  .overall-stats { grid-template-columns: repeat(2, 1fr); }
+}
+.hide { display: none !important; }
+
+/* Filter bar */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 20px 0 0;
+  padding: 16px 20px;
+  background: var(--bg-1);
+  border: 1px solid var(--fg-10);
+  border-radius: 8px;
+}
+.filter-label {
+  font-size: 10px;
+  color: var(--fg-45);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  align-self: center;
+  margin-right: 6px;
+}
+.filter-btn {
+  padding: 6px 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--fg-10);
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--fg-70);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.filter-btn:hover { background: var(--bg-3); color: var(--fg-100); }
+.filter-btn.active { background: var(--accent); color: var(--bg-0); border-color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-brand-logo">markins</div>
+    <div class="sidebar-brand-subtitle">Project Checklist</div>
+  </div>
+  <div style="padding: 12px 16px 0;">
+    <a href="index.html" style="display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 6px; font-size: 12px; color: var(--fg-70); text-decoration: none; background: var(--fg-5);">
+      ← Назад к оглавлению
+    </a>
+  </div>
+  <nav class="sidebar-nav" id="sidebar-nav"></nav>
+  <div style="padding: 12px 16px;">
+    <a href="#" onclick="window.LampardiAuth.clearAuth();window.location.replace('login.html');return false;" style="display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 6px; font-size: 11px; color: var(--fg-45); text-decoration: none;">
+      ⎋ Выйти
+    </a>
+  </div>
+</aside>
+
+<main class="main">
+
+  <header class="header">
+    <div class="header-label">Lampardi05 · Интернет-магазин</div>
+    <h1 class="header-title">Чек-лист проекта</h1>
+    <p class="header-subtitle">Полный реестр работ по сайту: страницы, функции, админка, SEO, UX-правки. Сохранение локальное + экспорт в JSON.</p>
+    <div class="header-actions">
+      <button class="btn btn-primary" onclick="saveToStorage(true)">💾 Сохранить</button>
+      <button class="btn" onclick="exportJson()">⬇ Скачать JSON</button>
+      <button class="btn" onclick="document.getElementById('import-file').click()">⬆ Загрузить JSON</button>
+      <input type="file" id="import-file" accept="application/json" class="hide" onchange="importJson(event)">
+      <button class="btn" onclick="expandAll()">Раскрыть всё</button>
+      <button class="btn" onclick="collapseAll()">Свернуть всё</button>
+      <button class="btn btn-danger" onclick="resetAll()">Сбросить</button>
+    </div>
+  </header>
+
+  <div class="overall-progress">
+    <div class="overall-progress-header">
+      <div class="overall-progress-label">Общий прогресс</div>
+      <div class="overall-progress-value"><span id="overall-percent">0%</span></div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill progress-done" id="progress-done-fill"></div>
+      <div class="progress-fill progress-partial" id="progress-partial-fill"></div>
+      <div class="progress-fill progress-blocked" id="progress-blocked-fill"></div>
+    </div>
+    <div class="overall-stats">
+      <div class="stat done"><div class="stat-label">Готово</div><div class="stat-value" id="stat-done">0</div></div>
+      <div class="stat partial"><div class="stat-label">Частично</div><div class="stat-value" id="stat-partial">0</div></div>
+      <div class="stat notdone"><div class="stat-label">Не готово</div><div class="stat-value" id="stat-notdone">0</div></div>
+      <div class="stat blocked"><div class="stat-label">Блокер</div><div class="stat-value" id="stat-blocked">0</div></div>
+      <div class="stat unknown"><div class="stat-label">Не проверено</div><div class="stat-value" id="stat-unknown">0</div></div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-label">Фильтр:</div>
+    <button class="filter-btn active" data-filter="all">Все</button>
+    <button class="filter-btn" data-filter="unknown">Не проверено</button>
+    <button class="filter-btn" data-filter="notdone">Не готово</button>
+    <button class="filter-btn" data-filter="partial">Частично</button>
+    <button class="filter-btn" data-filter="blocked">Блокеры</button>
+    <button class="filter-btn" data-filter="done">Готово</button>
+    <button class="filter-btn" data-filter="p0">P0 критические</button>
+    <button class="filter-btn" data-filter="p1">P1 высокие</button>
+    <button class="filter-btn" data-filter="manual">Нужно проверить вручную</button>
+  </div>
+
+  <div id="sections"></div>
+
+  <div class="footer-note">
+    <strong>Как пользоваться:</strong> нажимай на статус слева от каждого пункта, чтобы изменить его. Нажимай "Комментарий" чтобы добавить заметку. Данные сохраняются автоматически в браузере. Чтобы поделиться прогрессом — "Скачать JSON" и отправь файл. Чтобы загрузить мой прогресс — "Загрузить JSON". Для полной очистки — "Сбросить".<br><br>
+    <strong>Источники:</strong> договор № 21092025 от 21.09.2025, аудит сайта 10-11.04.2026, список правок из Notion (28 штук), ответы команды.
+  </div>
+
+</main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+/* ================================
+   DATA — структура чек-листа
+   ================================ */
+const STATUS_OPTIONS = [
+  { v: 'unknown',   label: '? не проверено'  },
+  { v: 'done',      label: '✓ готово'        },
+  { v: 'partial',   label: '⚠ частично'      },
+  { v: 'notdone',   label: '✗ не готово'     },
+  { v: 'blocked',   label: '◐ блокер'        },
+  { v: 'cancelled', label: '⊘ отменено'      }
+];
+
+// Типы:
+//   t: 'contract' (из договора), 'notion' (UX-правка), 'tech' (техническая), 'manual' (проверить вручную)
+//   p: 'p0'|'p1'|'p2'|'p3' — приоритет
+//   s: начальный статус ('done', 'notdone', 'partial', 'blocked', 'unknown', 'cancelled')
+//   d: описание (опционально)
+
+const DATA = [
+  {
+    id: 'header',
+    num: '01',
+    title: 'Шапка сайта — новый дизайн',
+    desc: 'Единая задача: редизайн шапки (включая поиск, меню, мобильную)',
+    items: [
+      { id: 'hdr-base-1',  text: 'Функция поиска работает (стандартный Битрикс)', d:'Функционал на месте, нужен только новый дизайн', t:'contract', s:'done' },
+      { id: 'hdr-base-2',  text: 'Логотип ведёт на главную', t:'contract', s:'done' },
+      { id: 'hdr-base-3',  text: 'Меню категорий в шапке', t:'contract', s:'done' },
+      { id: 'hdr-base-4',  text: 'Иконка корзины в шапке + счётчик', t:'contract', s:'unknown' },
+      { id: 'hdr-base-5',  text: 'Иконка избранного в шапке', t:'contract', s:'unknown' },
+      { id: 'hdr-base-6',  text: 'Иконка ЛК в шапке → переход на авторизацию/профиль', t:'contract', s:'unknown' },
+      { id: 'hdr-redesign-1', text: '⚙️ Отрисовка нового дизайна шапки в Figma', d:'Дизайнер готовит макет. Включает всё ниже', t:'contract', s:'notdone' },
+      { id: 'hdr-redesign-2', text: '⚙️ Согласование макета с заказчиком', t:'contract', s:'notdone' },
+      { id: 'hdr-redesign-3', text: '⚙️ Вёрстка шапки по макету', t:'contract', s:'notdone' },
+      { id: 'hdr-redesign-4', text: '⚙️ Редизайн кнопки и модалки поиска (вкл. автодополнение)', d:'Функция есть, нужен дизайн. От разработчиков — какие возможности поиска доступны в Битриксе', t:'contract', s:'notdone' },
+      { id: 'hdr-redesign-5', text: '⚙️ Поведение выпадающего меню «Каталог» в десктопе', d:'Решится в рамках нового дизайна', t:'notion', s:'notdone' },
+      { id: 'hdr-redesign-6', text: '⚙️ Убрать hover-эффекты со всех элементов шапки', d:'Включено в задачу редизайна', t:'notion', s:'notdone' },
+      { id: 'hdr-redesign-7', text: '⚙️ Фон шапки при скролле (sticky)', d:'Решится в рамках нового дизайна', t:'notion', s:'notdone' },
+      { id: 'hdr-redesign-8', text: '⚙️ Мобильная шапка: бургер-меню, поведение, все элементы', t:'contract', s:'notdone' },
+      { id: 'hdr-redesign-9', text: '⚙️ Адаптивность шапки на всех разрешениях', t:'contract', s:'notdone' }
+    ]
+  },
+  {
+    id: 'footer',
+    num: '02',
+    title: 'Подвал сайта',
+    desc: 'Контакты, ссылки, соцсети, подписка',
+    items: [
+      { id: 'ftr-1',  text: 'Логотип в подвале', t:'contract', s:'done' },
+      { id: 'ftr-2',  text: 'Список категорий в подвале — все ссылки работают', t:'manual', s:'unknown' },
+      { id: 'ftr-3',  text: 'Добавить кнопку «Полный каталог» под логотипом', d:'НЕ ПОНЯЛ — уточнить в Notion', t:'notion', p:'p3', s:'unknown' },
+      { id: 'ftr-4',  text: 'Переименовать «Условия доставки и оплаты» → «Доставка и оплата»', d:'НЕ ПОНЯЛ — уточнить в Notion', t:'notion', p:'p3', s:'unknown' },
+      { id: 'ftr-5',  text: 'Добавить пункт «Оферта» в подвал', d:'НЕ ПОНЯЛ — уточнить в Notion', t:'notion', p:'p3', s:'unknown' },
+      { id: 'ftr-6',  text: 'Телефон +7 (988) 293-32-32 (чёрный цвет)', t:'notion', p:'p2', s:'done' },
+      { id: 'ftr-7',  text: 'Адрес: Махачкала, Ж. Гаджимурадова, 61 со ссылкой на 2GIS', t:'notion', p:'p2', s:'done' },
+      { id: 'ftr-8',  text: 'Email в подвале', t:'contract', s:'done' },
+      { id: 'ftr-9',  text: 'Время работы Пн-Пт 10:00-19:00 МСК', t:'contract', s:'done' },
+      { id: 'ftr-10', text: 'Ссылки на соцсети: Telegram', d:'Заказчик добавит сам через админку (не наша задача)', t:'contract', s:'done' },
+      { id: 'ftr-11', text: 'Ссылки на соцсети: WhatsApp', d:'Заказчик добавит сам через админку', t:'contract', s:'done' },
+      { id: 'ftr-12', text: 'Ссылки на соцсети: VK', d:'Заказчик добавит сам через админку', t:'contract', s:'done' },
+      { id: 'ftr-13', text: 'Форма подписки на рассылку', t:'contract', s:'done' },
+      { id: 'ftr-14', text: 'Валидация согласия на обработку данных', t:'contract', s:'done' },
+      { id: 'ftr-15', text: 'Текст «markins» в правом нижнем углу — кликабельный, ссылка на markins.ru', t:'notion', p:'p3', s:'unknown' },
+      { id: 'ftr-16', text: 'Ссылки: О компании, Контакты, Доставка, Политика', t:'manual', s:'unknown' },
+      { id: 'ftr-17', text: 'Мобильный подвал: отступ между категориями и ссылками', d:'НЕ ПОНЯЛ — уточнить в Notion', t:'notion', p:'p3', s:'unknown' }
+    ]
+  },
+  {
+    id: 'home',
+    num: '03',
+    title: 'Главная страница',
+    desc: 'Слайдер, категории, хиты продаж, блок о компании',
+    items: [
+      { id: 'home-1',  text: 'Слайдер с актуальными предложениями', t:'contract', s:'done' },
+      { id: 'home-2',  text: 'Автопрокрутка баннера каждые 5 секунд', t:'notion', p:'p3', s:'unknown' },
+      { id: 'home-3',  text: 'Стрелки переключения слайдов в десктопе', t:'manual', s:'unknown' },
+      { id: 'home-4',  text: 'Точки/индикаторы слайдов', t:'manual', s:'unknown' },
+      { id: 'home-5',  text: 'Блок «Популярные категории» (карусель)', t:'contract', s:'done' },
+      { id: 'home-6',  text: 'Блок «Популярные товары» / «Хиты продаж»', t:'contract', s:'done' },
+      { id: 'home-7',  text: 'Бейдж «хит» на карточках', t:'contract', s:'done' },
+      { id: 'home-8',  text: 'Блок о компании на главной', t:'contract', s:'done' },
+      { id: 'home-9',  text: 'Форма подписки на рассылку', t:'contract', s:'done' },
+      { id: 'home-10', text: 'Мобильная: убрать тормоза/дёрганья при скролле', d:'Замечено на iPhone Air', t:'notion', p:'p2', s:'done' },
+      { id: 'home-11', text: 'Мобильная: убрать кнопки-стрелки в блоках с товарами', d:'НЕ ПОНЯЛ — уточнить в Notion', t:'notion', p:'p3', s:'unknown' },
+      { id: 'home-12', text: 'Все изображения на главной загружаются корректно', t:'manual', s:'unknown' }
+    ]
+  },
+  {
+    id: 'catalog',
+    num: '04',
+    title: 'Каталог (страница категории)',
+    desc: 'Фильтры, сортировка, карточки, пагинация',
+    items: [
+      { id: 'cat-1',  text: 'Многоуровневая структура категорий', t:'contract', s:'done' },
+      { id: 'cat-2',  text: 'Карточки товаров с фото, названием, ценой', t:'contract', s:'done' },
+      { id: 'cat-3',  text: 'Хлебные крошки', t:'contract', s:'done' },
+      { id: 'cat-4',  text: 'Сортировка: по популярности / цене / названию', t:'contract', s:'done' },
+      { id: 'cat-5',  text: 'Фильтр по цене (диапазон)', t:'contract', s:'done' },
+      { id: 'cat-6',  text: 'Фильтр по подкатегориям', t:'contract', s:'done' },
+      { id: 'cat-7',  text: 'Фильтр по бренду', d:'По договору нужен. ASK DEV: можно ли настроить через админку', t:'contract', s:'notdone' },
+      { id: 'cat-8',  text: 'Фильтр по типу', t:'contract', s:'notdone' },
+      { id: 'cat-9',  text: 'Фильтр по материалу', t:'contract', s:'notdone' },
+      { id: 'cat-10', text: 'Кнопка «Показать ещё» работает', t:'manual', s:'done' },
+      { id: 'cat-11', text: 'Автоматическая подгрузка товаров при скролле', d:'По договору: «подгрузка при прокрутке»', t:'contract', s:'notdone' },
+      { id: 'cat-12', text: 'Мобильная: карточки на ≤767px не уходят за границы', t:'notion', p:'p1', s:'unknown' },
+      { id: 'cat-13', text: 'Мобильная: карточки на 768-1080px не слишком узкие', t:'notion', p:'p1', s:'unknown' },
+      { id: 'cat-14', text: 'Мобильная: 1 товар в ряд (по Figma)', t:'notion', p:'p1', s:'unknown' },
+      { id: 'cat-15', text: 'Уменьшить шрифт заголовка категории в мобильной', t:'notion', p:'p2', s:'done' },
+      { id: 'cat-16', text: 'Кнопка сортировки в мобильной — по дизайну Figma', t:'notion', p:'p3', s:'unknown' },
+      { id: 'cat-17', text: 'Анимация открытия модалки фильтров — выезжать справа', t:'notion', p:'p3', s:'unknown' },
+      { id: 'cat-18', text: 'Шрифт заголовка «ФИЛЬТРЫ» по Figma', t:'notion', p:'p3', s:'unknown' },
+      { id: 'cat-19', text: '⊘ Кнопки «Применить» / «Сбросить» в фильтрах', d:'Отменено', t:'notion', s:'cancelled' },
+      { id: 'cat-20', text: '⊘ Кнопка «Показать ещё»', d:'Отменено', t:'notion', s:'cancelled' },
+      { id: 'cat-21', text: 'Клик по карточке — переход на страницу товара', t:'manual', s:'unknown' }
+    ]
+  },
+  {
+    id: 'product',
+    num: '05',
+    title: 'Карточка товара',
+    desc: 'Галерея, цены, характеристики, кнопки',
+    items: [
+      { id: 'prd-1',  text: 'Фотогалерея с возможностью увеличения', t:'contract', s:'done' },
+      { id: 'prd-2',  text: 'Подробное описание и характеристики', t:'contract', s:'done' },
+      { id: 'prd-3',  text: 'Отображение розничной цены', t:'contract', s:'done' },
+      { id: 'prd-4',  text: 'Отображение оптовой цены для авторизованных оптовиков', t:'contract', s:'done' },
+      { id: 'prd-5',  text: 'Указание наличия на складе', t:'contract', s:'done' },
+      { id: 'prd-6',  text: 'Кнопка «Добавить в корзину» работает', t:'contract', s:'done' },
+      { id: 'prd-7',  text: 'Кнопка «Купить в один клик» работает', t:'contract', s:'done' },
+      { id: 'prd-8',  text: 'Блок «Похожие товары»', t:'contract', s:'done' },
+      { id: 'prd-9',  text: 'Кнопка «В избранное» — функционально работает', d:'Сейчас только иконка, функции нет', t:'contract', s:'notdone' },
+      { id: 'prd-10', text: 'При нажатии «В корзину» — модальное окно', t:'notion', p:'p2', s:'done' },
+      { id: 'prd-11', text: 'Убрать хлебные крошки с полным путём, оставить только над названием', t:'notion', p:'p2', s:'done' },
+      { id: 'prd-12', text: 'Отступы — цена и кнопка «В корзину» видны на первом экране десктопа', t:'notion', p:'p1', s:'done' },
+      { id: 'prd-13', text: 'Мобильная: фото + название + цена + кнопки на первом экране', t:'notion', p:'p1', s:'done' },
+      { id: 'prd-14', text: 'Адаптив ≤1024px: название, описание, характеристики не уходят за экран', t:'notion', p:'p1', s:'done' },
+      { id: 'prd-15', text: 'Переключение количества в карточке (+/−)', t:'manual', s:'unknown' },
+      { id: 'prd-16', text: 'Кнопки соц. шаринга (если есть)', t:'manual', s:'unknown' },
+      { id: 'prd-17', text: 'Артикул отображается', t:'manual', s:'unknown' }
+    ]
+  },
+  {
+    id: 'cart',
+    num: '06',
+    title: 'Корзина',
+    desc: 'Список товаров, скидки, смета, счёт',
+    items: [
+      { id: 'crt-1',  text: 'Список товаров с фото и характеристиками', t:'contract', s:'done' },
+      { id: 'crt-2',  text: 'Изменение количества товара', t:'contract', s:'done' },
+      { id: 'crt-3',  text: 'Удаление товара', t:'contract', s:'done' },
+      { id: 'crt-4',  text: 'Расчёт общей стоимости', t:'contract', s:'done' },
+      { id: 'crt-5',  text: 'Поле для купона скидки', t:'contract', s:'done' },
+      { id: 'crt-6',  text: 'Автоматическая скидка 10% до 40 000 ₽', d:'ASK CLIENT: только для розничных или и для оптовых тоже?', t:'contract', s:'notdone' },
+      { id: 'crt-7',  text: 'Автоматическая скидка 15% от 41 000 до 100 000 ₽', t:'contract', s:'notdone' },
+      { id: 'crt-8',  text: 'Автоматическая скидка 20% от 101 000 ₽', t:'contract', s:'notdone' },
+      { id: 'crt-9',  text: 'Отображение размера скидки и экономии', t:'contract', s:'notdone' },
+      { id: 'crt-10', text: 'Отображение оптовых цен (для опта)', t:'contract', s:'done' },
+      { id: 'crt-11', text: 'Кнопка «Скачать смету» для оптовых клиентов', t:'contract', s:'notdone' },
+      { id: 'crt-12', text: 'Формирование счёта на оплату для оптовых клиентов', t:'contract', s:'notdone' },
+      { id: 'crt-13', text: 'Кнопка «Оформить заказ» переходит к оформлению', t:'manual', s:'unknown' },
+      { id: 'crt-14', text: 'Мобильная: корзина открывается', t:'notion', p:'p1', s:'done' }
+    ]
+  },
+  {
+    id: 'checkout',
+    num: '07',
+    title: 'Оформление заказа',
+    desc: '4 этапа: контакты → доставка → оплата → подтверждение',
+    items: [
+      { id: 'ch-1',  text: 'Шаг 1: контактные данные', t:'contract', s:'done' },
+      { id: 'ch-2',  text: 'Автозаполнение полей для авторизованных', t:'contract', s:'unknown' },
+      { id: 'ch-3',  text: 'Шаг 2: выбор способа доставки', t:'contract', s:'done' },
+      { id: 'ch-4',  text: 'Выбор транспортной компании — СДЭК', d:'API подтверждено (apidoc.cdek.ru), интеграция бесплатная', t:'contract', s:'notdone' },
+      { id: 'ch-5',  text: 'Выбор транспортной компании — Деловые линии', d:'API подтверждено (публичный калькулятор + ЛК, JSON/XML)', t:'contract', s:'notdone' },
+      { id: 'ch-6',  text: 'Выбор транспортной компании — MagicTrans', d:'API подтверждено (api.magic-trans.ru, токен через support)', t:'contract', s:'notdone' },
+      { id: 'ch-7',  text: 'Автоматический расчёт стоимости доставки через API ТК', t:'contract', s:'notdone' },
+      { id: 'ch-8',  text: 'Шаг 3: выбор способа оплаты', t:'contract', s:'done' },
+      { id: 'ch-9',  text: 'Для оптовиков — только заявка на оплату', t:'contract', s:'unknown' },
+      { id: 'ch-10', text: 'Шаг 4: подтверждение с итоговой информацией', t:'contract', s:'done' },
+      { id: 'ch-11', text: 'После клика «Оформить заказ» — показывать подтверждение (popup или текст)', t:'notion', p:'p1', s:'done' },
+      { id: 'ch-12', text: 'Переименовать поле «Адрес» → «Город/Регион» + новое поле «Адрес»', d:'НЕ ПОНЯЛ — уточнить в Notion', t:'notion', p:'p2', s:'unknown' },
+      { id: 'ch-13', text: 'Переименовать «Доставка курьером» → «Доставка», убрать стоимость', t:'notion', p:'p2', s:'done' }
+    ]
+  },
+  {
+    id: 'lk-retail',
+    num: '08',
+    title: 'Личный кабинет — розничный',
+    desc: 'Профиль, заказы, избранное, рассылки',
+    items: [
+      { id: 'lkr-1', text: 'Страница ЛК не заглушка «В разработке»', t:'contract', s:'notdone' },
+      { id: 'lkr-2', text: 'Персональная информация', t:'contract', s:'notdone' },
+      { id: 'lkr-3', text: 'Редактирование профиля', t:'contract', s:'notdone' },
+      { id: 'lkr-4', text: 'История заказов', t:'contract', s:'notdone' },
+      { id: 'lkr-5', text: 'Детализация заказа', t:'contract', s:'notdone' },
+      { id: 'lkr-6', text: 'Избранные товары — список', t:'contract', s:'notdone' },
+      { id: 'lkr-7', text: 'Подписка на рассылку в ЛК', t:'contract', s:'notdone' }
+    ]
+  },
+  {
+    id: 'lk-b2b',
+    num: '09',
+    title: 'Личный кабинет — оптовый',
+    desc: 'Компания, заказы, счета, остатки',
+    items: [
+      { id: 'lkb-1', text: 'Информация компании', t:'contract', s:'notdone' },
+      { id: 'lkb-2', text: 'Редактирование данных компании', t:'contract', s:'notdone' },
+      { id: 'lkb-3', text: 'История заказов и счетов', t:'contract', s:'notdone' },
+      { id: 'lkb-4', text: 'Скачивание счетов', t:'contract', s:'notdone' },
+      { id: 'lkb-5', text: 'Остатки товаров на складе', t:'contract', s:'notdone' },
+      { id: 'lkb-6', text: 'Оптовые цены отображаются', t:'contract', s:'done' }
+    ]
+  },
+  {
+    id: 'auth',
+    num: '10',
+    title: 'Авторизация и регистрация',
+    desc: 'Вход, регистрация, восстановление пароля',
+    items: [
+      { id: 'au-1', text: 'Страница входа с формой авторизации', t:'contract', s:'done' },
+      { id: 'au-2', text: 'Чекбокс «Запомнить меня»', t:'contract', s:'done' },
+      { id: 'au-3', text: 'Восстановление пароля', t:'contract', s:'done' },
+      { id: 'au-4', text: 'Регистрация пользователя', t:'contract', s:'done' },
+      { id: 'au-5', text: 'Подтверждение email', t:'contract', s:'done' },
+      { id: 'au-6', text: 'Тип «оптовый» назначается менеджером через админку', t:'contract', s:'done' }
+    ]
+  },
+  {
+    id: 'static-pages',
+    num: '11',
+    title: 'Служебные страницы',
+    desc: 'О компании, контакты, юр. тексты, 404',
+    items: [
+      { id: 'sp-1',  text: 'О компании — контент', t:'contract', s:'done' },
+      { id: 'sp-2',  text: 'Контакты: адрес, карта', t:'contract', s:'done' },
+      { id: 'sp-3',  text: 'Контакты: форма обратной связи', t:'contract', s:'unknown' },
+      { id: 'sp-4',  text: 'Контакты: управление несколькими филиалами через админку', d:'ASK DEV: реализовано ли. Если нет — согласовать с заказчиком', t:'contract', s:'unknown' },
+      { id: 'sp-5',  text: 'Условия доставки и оплаты — страница есть', t:'contract', s:'done' },
+      { id: 'sp-6',  text: 'Политика конфиденциальности — страница есть', t:'contract', s:'done' },
+      { id: 'sp-7',  text: 'Правовая информация — страница есть', t:'contract', s:'done' },
+      { id: 'sp-8',  text: 'Публичная оферта — страница создана', d:'Нет. ASK CLIENT: юрист заказчика должен подготовить текст', t:'contract', s:'notdone' },
+      { id: 'sp-9',  text: 'Актуальные тексты всех юр. страниц от юриста заказчика', d:'Нужно только для наполнения, не для создания страниц', t:'contract', s:'notdone' },
+      { id: 'sp-10', text: 'Кастомная страница 404 с корректным HTTP-кодом', d:'Сейчас любой несуществующий URL отдаёт главную с title «Главная»', t:'contract', s:'notdone' },
+      { id: 'sp-11', text: 'Страница результатов поиска', t:'contract', s:'unknown' }
+    ]
+  },
+  {
+    id: 'discounts',
+    num: '12',
+    title: 'Система автоматических скидок',
+    desc: 'По сумме заказа, без регистрации в программе',
+    items: [
+      { id: 'ds-1', text: 'Скидка 10% до 40 000 ₽', t:'contract', s:'notdone' },
+      { id: 'ds-2', text: 'Скидка 15% от 41 000 до 100 000 ₽', t:'contract', s:'notdone' },
+      { id: 'ds-3', text: 'Скидка 20% от 101 000 ₽', t:'contract', s:'notdone' },
+      { id: 'ds-4', text: 'Автоматическое применение в корзине', t:'contract', s:'notdone' },
+      { id: 'ds-5', text: 'Отображение размера экономии', t:'contract', s:'notdone' },
+      { id: 'ds-6', text: 'Работает без регистрации в программе лояльности', t:'contract', s:'notdone' }
+    ]
+  },
+  {
+    id: 'integrations',
+    num: '13',
+    title: 'Интеграции',
+    desc: '1С, транспортные компании, уведомления',
+    items: [
+      { id: 'int-1',  text: '1С: синхронизация остатков', t:'contract', s:'done' },
+      { id: 'int-2',  text: '1С: синхронизация розничных цен', t:'contract', s:'done' },
+      { id: 'int-3',  text: '1С: синхронизация оптовых цен', t:'contract', s:'done' },
+      { id: 'int-4',  text: '1С: синхронизация фото товаров', d:'Фото тянутся из 1С. Заказчик сейчас пополняет по товарам без фото', t:'contract', s:'done' },
+      { id: 'int-4a', text: '1С: синхронизация описаний товаров', t:'contract', s:'done' },
+      { id: 'int-4b', text: '1С: синхронизация характеристик товаров', t:'contract', s:'done' },
+      { id: 'int-4c', text: 'Названия и категории заводятся в CMS Битрикс (не из 1С)', t:'contract', s:'done' },
+      { id: 'int-5',  text: 'СДЭК: регистрация заказчика + API ключи', d:'Нужно только перед работами по интеграции, не перед стартом', t:'contract', s:'notdone' },
+      { id: 'int-6',  text: 'СДЭК: интеграция с API', d:'API бесплатное, документация apidoc.cdek.ru', t:'contract', s:'notdone' },
+      { id: 'int-7',  text: 'Деловые линии: регистрация + API ключи', t:'contract', s:'notdone' },
+      { id: 'int-8',  text: 'Деловые линии: интеграция с API', d:'Публичный калькулятор + API ЛК, форматы JSON/XML', t:'contract', s:'notdone' },
+      { id: 'int-9',  text: 'MagicTrans: регистрация + API ключи', d:'Токен через support: api@magic-trans.ru', t:'contract', s:'notdone' },
+      { id: 'int-10', text: 'MagicTrans: интеграция с API', d:'API на api.magic-trans.ru, отдельный модуль для 1С', t:'contract', s:'notdone' },
+      { id: 'int-11', text: 'Автоматическая передача данных заказа в ТК', t:'contract', s:'notdone' },
+      { id: 'int-12', text: 'Telegram-бот: уведомления о заявках в группу', t:'contract', s:'notdone' },
+      { id: 'int-13', text: 'Email-уведомления о статусе заказа', t:'contract', s:'done' },
+      { id: 'int-14', text: 'Система email-рассылок (сегментация, шаблоны)', d:'ASK DEV: реализовано ли', t:'contract', s:'unknown' },
+      { id: 'int-15', text: 'Персонализированные предложения', d:'Формулировка из договора неясна. Уточнить у заказчика что именно имеется в виду', t:'contract', s:'unknown' }
+    ]
+  },
+  {
+    id: 'admin',
+    num: '14',
+    title: 'Админ-панель (Битрикс)',
+    desc: 'Управление товарами, заказами, пользователями, контентом',
+    items: [
+      { id: 'ad-1',  text: 'Добавление/редактирование товаров', t:'contract', s:'done' },
+      { id: 'ad-2',  text: 'Массовые операции с товарами', t:'contract', s:'done' },
+      { id: 'ad-3',  text: 'Управление категориями', t:'contract', s:'done' },
+      { id: 'ad-4',  text: 'Загрузка изображений товаров', t:'contract', s:'done' },
+      { id: 'ad-5',  text: 'Настройка фильтров каталога через админку', d:'ASK DEV: возможно ли настраивать фильтры (бренд/тип/материал) без кода', t:'contract', s:'unknown' },
+      { id: 'ad-6',  text: 'Просмотр и обработка заказов', t:'contract', s:'done' },
+      { id: 'ad-7',  text: 'Смена статусов заказов (автоматическая + ручная)', t:'contract', s:'done' },
+      { id: 'ad-8',  text: 'Обработка заявок «Купить в один клик»', t:'contract', s:'unknown' },
+      { id: 'ad-9',  text: 'Формирование отчётов по заказам', t:'contract', s:'unknown' },
+      { id: 'ad-10', text: 'Просмотр списка клиентов', t:'contract', s:'done' },
+      { id: 'ad-11', text: 'Редактирование данных пользователей', t:'contract', s:'done' },
+      { id: 'ad-12', text: 'Управление типами пользователей (розница/опт)', t:'contract', s:'done' },
+      { id: 'ad-13', text: 'Редактирование страниц сайта', t:'contract', s:'done' },
+      { id: 'ad-14', text: 'Управление баннерами (слайдер главной)', t:'contract', s:'done' },
+      { id: 'ad-15', text: 'Настройка рассылок через админку', t:'contract', s:'unknown' },
+      { id: 'ad-16', text: 'Настройка ссылок на соцсети через админку', t:'contract', s:'unknown' }
+    ]
+  },
+  {
+    id: 'seo',
+    num: '15',
+    title: 'SEO и техтребования',
+    desc: 'Meta, Schema.org, sitemap, robots, скорость',
+    items: [
+      { id: 'seo-1',  text: 'ЧПУ (человекопонятные URL)', t:'contract', s:'done' },
+      { id: 'seo-2',  text: 'SSL-сертификат', t:'contract', s:'done' },
+      { id: 'seo-3',  text: 'Meta title на всех страницах', t:'contract', s:'unknown' },
+      { id: 'seo-4',  text: 'Meta description на всех страницах', t:'contract', s:'unknown' },
+      { id: 'seo-5',  text: 'Meta keywords (опционально)', t:'contract', s:'unknown' },
+      { id: 'seo-6',  text: 'Schema.org — Product на карточках товаров', t:'contract', s:'unknown' },
+      { id: 'seo-7',  text: 'Schema.org — BreadcrumbList', t:'contract', s:'unknown' },
+      { id: 'seo-8',  text: 'Schema.org — Organization', t:'contract', s:'unknown' },
+      { id: 'seo-9',  text: 'Sitemap.xml', t:'contract', s:'unknown' },
+      { id: 'seo-10', text: 'Robots.txt', t:'contract', s:'unknown' },
+      { id: 'seo-11', text: 'Canonical URL', t:'tech', s:'unknown' },
+      { id: 'seo-12', text: 'Open Graph теги', t:'tech', s:'unknown' },
+      { id: 'seo-13', text: 'Twitter Card теги', t:'tech', s:'unknown' },
+      { id: 'seo-14', text: 'Alt-теги на всех изображениях', t:'tech', s:'unknown' },
+      { id: 'seo-15', text: 'Корректная иерархия h1-h6', t:'tech', s:'unknown' },
+      { id: 'seo-16', text: 'Время загрузки страниц ≤ 3 секунды', t:'contract', s:'unknown' },
+      { id: 'seo-17', text: 'Минификация CSS/JS', t:'tech', s:'unknown' },
+      { id: 'seo-18', text: 'Кэширование статики', t:'tech', s:'unknown' },
+      { id: 'seo-19', text: 'Оптимизация изображений (WebP/сжатие)', t:'tech', s:'unknown' }
+    ]
+  },
+  {
+    id: 'responsive',
+    num: '16',
+    title: 'Адаптивность и кроссбраузерность',
+    desc: 'Мобильные, планшеты, десктоп, все браузеры',
+    items: [
+      { id: 'rsp-1',  text: 'Mobile 320-480px: главная', t:'manual', s:'unknown' },
+      { id: 'rsp-2',  text: 'Mobile 320-480px: каталог', t:'manual', s:'unknown' },
+      { id: 'rsp-3',  text: 'Mobile 320-480px: карточка товара', t:'manual', s:'unknown' },
+      { id: 'rsp-4',  text: 'Mobile 320-480px: корзина', t:'manual', s:'unknown' },
+      { id: 'rsp-5',  text: 'Mobile 320-480px: оформление заказа', t:'manual', s:'unknown' },
+      { id: 'rsp-6',  text: 'Tablet 768-1024px: все страницы', t:'manual', s:'unknown' },
+      { id: 'rsp-7',  text: 'Desktop 1080-1920px: все страницы', t:'manual', s:'unknown' },
+      { id: 'rsp-8',  text: 'Desktop >1920px: не ломается', t:'manual', s:'unknown' },
+      { id: 'rsp-9',  text: 'Chrome — работает', t:'manual', s:'unknown' },
+      { id: 'rsp-10', text: 'Safari — работает', t:'manual', s:'unknown' },
+      { id: 'rsp-11', text: 'Firefox — работает', t:'manual', s:'unknown' },
+      { id: 'rsp-12', text: 'Edge — работает', t:'manual', s:'unknown' },
+      { id: 'rsp-13', text: 'Safari iOS — работает', t:'manual', s:'unknown' },
+      { id: 'rsp-14', text: 'Chrome Android — работает', t:'manual', s:'unknown' }
+    ]
+  },
+  {
+    id: 'security',
+    num: '17',
+    title: 'Безопасность и надёжность',
+    desc: 'Требования п. 2.1.3, 2.1.4 договора',
+    items: [
+      { id: 'sec-1', text: 'Защита персональных данных (152-ФЗ)', t:'contract', s:'unknown' },
+      { id: 'sec-2', text: 'SSL защищённое соединение', t:'contract', s:'done' },
+      { id: 'sec-3', text: 'Защита от SQL-инъекций', t:'contract', s:'unknown' },
+      { id: 'sec-4', text: 'Защита от XSS-атак', t:'contract', s:'unknown' },
+      { id: 'sec-5', text: 'Регулярное резервное копирование', t:'contract', s:'unknown' },
+      { id: 'sec-6', text: 'Разграничение прав доступа админов', t:'contract', s:'unknown' },
+      { id: 'sec-7', text: 'Доступность сайта ≥ 99%', t:'contract', s:'unknown' }
+    ]
+  },
+  {
+    id: 'delivery',
+    num: '18',
+    title: 'Сдача проекта',
+    desc: 'Финальное тестирование + обучение',
+    items: [
+      { id: 'dl-1', text: 'Комплексное тестирование всего функционала', t:'contract', s:'notdone' },
+      { id: 'dl-2', text: 'Тестирование на различных устройствах', t:'contract', s:'notdone' },
+      { id: 'dl-3', text: 'Кроссбраузерное тестирование', t:'contract', s:'notdone' },
+      { id: 'dl-4', text: 'Проверка интеграций и автоматизаций', t:'contract', s:'notdone' },
+      { id: 'dl-5', text: 'Исправление выявленных ошибок', t:'contract', s:'notdone' },
+      { id: 'dl-6', text: 'Видеозвонок с заказчиком: обучение работе с сайтом и админкой', d:'Показать что как работает, ответить на вопросы', t:'contract', s:'notdone' },
+      { id: 'dl-7', text: 'Консультационная поддержка 1 месяц (гарантийное обслуживание)', t:'contract', s:'notdone' },
+      { id: 'dl-8', text: 'Подписание акта окончательной сдачи-приёмки', t:'contract', s:'notdone' }
+    ]
+  }
+];
+
+/* ================================
+   STATE + STORAGE
+   ================================ */
+const STORAGE_KEY = 'lampardi05_checklist_v1';
+let state = loadFromStorage() || {};
+let currentFilter = 'all';
+
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+
+function saveToStorage(showToast) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if (showToast) toast('Сохранено в браузере', 'success');
+  } catch (e) { toast('Ошибка сохранения: ' + e.message, 'error'); }
+}
+
+function getItemState(itemId, defaultStatus) {
+  if (!state[itemId]) state[itemId] = { status: defaultStatus || 'unknown', comment: '' };
+  return state[itemId];
+}
+
+/* ================================
+   RENDER
+   ================================ */
+function renderAll() {
+  renderSidebar();
+  renderSections();
+  updateStats();
+}
+
+function renderSidebar() {
+  const nav = document.getElementById('sidebar-nav');
+  const html = [
+    '<div class="nav-title">Разделы</div>',
+    ...DATA.map(section => {
+      const stats = sectionStats(section);
+      const progress = stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
+      const isDone = progress === 100;
+      return `<a class="nav-item ${isDone ? 'done' : ''}" href="#sec-${section.id}">
+        <span>${section.num}. ${section.title}</span>
+        <span class="nav-item-progress">${progress}%</span>
+      </a>`;
+    })
+  ].join('');
+  nav.innerHTML = html;
+}
+
+function renderSections() {
+  const container = document.getElementById('sections');
+  container.innerHTML = DATA.map(section => {
+    const stats = sectionStats(section);
+    const progress = stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
+    return `
+      <section class="section" id="sec-${section.id}">
+        <div class="section-header" onclick="toggleSection('${section.id}')">
+          <div>
+            <div class="section-title-group">
+              <span class="section-number">${section.num}</span>
+              <div>
+                <div class="section-title">${section.title}</div>
+                <div class="section-description">${section.desc}</div>
+              </div>
+            </div>
+          </div>
+          <div class="section-progress">
+            <span class="section-progress-text" id="sec-prog-text-${section.id}">${stats.done}/${stats.total}</span>
+            <div class="section-progress-bar" id="sec-prog-bar-${section.id}">
+              ${renderSectionProgressBar(stats)}
+            </div>
+            <span class="chevron">▼</span>
+          </div>
+        </div>
+        <div class="section-body">
+          ${section.items.map(item => renderItem(item)).join('')}
+        </div>
+      </section>
+    `;
+  }).join('');
+  attachHandlers();
+}
+
+function renderSectionProgressBar(stats) {
+  if (!stats.total) return '';
+  const dn = (stats.done / stats.total) * 100;
+  const pt = (stats.partial / stats.total) * 100;
+  const bl = (stats.blocked / stats.total) * 100;
+  return `
+    <div class="progress-fill progress-done" style="width:${dn}%"></div>
+    <div class="progress-fill progress-partial" style="width:${pt}%"></div>
+    <div class="progress-fill progress-blocked" style="width:${bl}%"></div>
+  `;
+}
+
+function renderItem(item) {
+  const st = getItemState(item.id, item.s);
+  const tags = [];
+  if (item.p === 'p0') tags.push('<span class="tag tag-p0">P0 КРИТ</span>');
+  if (item.p === 'p1') tags.push('<span class="tag tag-p1">P1 ВЫСОК</span>');
+  if (item.p === 'p2') tags.push('<span class="tag tag-p2">P2 СРЕДН</span>');
+  if (item.p === 'p3') tags.push('<span class="tag tag-p3">P3 НИЗКИЙ</span>');
+  if (item.t === 'contract') tags.push('<span class="tag tag-contract">Договор</span>');
+  if (item.t === 'notion') tags.push('<span class="tag tag-notion">Notion</span>');
+  if (item.t === 'manual') tags.push('<span class="tag tag-manual">Проверка</span>');
+  if (item.t === 'tech') tags.push('<span class="tag tag-contract">Тех.</span>');
+
+  const hasComment = st.comment && st.comment.trim().length > 0;
+
+  return `
+    <div class="item status-${st.status} ${hasComment ? 'comment-open' : ''}" data-item-id="${item.id}" data-priority="${item.p || ''}" data-type="${item.t || ''}" data-status="${st.status}">
+      <div class="item-status">
+        <select class="status-select" onchange="changeStatus('${item.id}', this.value)">
+          ${STATUS_OPTIONS.map(o => `<option value="${o.v}" ${st.status === o.v ? 'selected' : ''}>${o.label}</option>`).join('')}
+        </select>
+      </div>
+      <div class="item-body">
+        <div class="item-text">${item.text}</div>
+        ${item.d ? `<div class="item-details">${item.d}</div>` : ''}
+        <div class="item-tags">${tags.join('')}</div>
+        <div class="item-comment-wrap">
+          <button class="item-comment-toggle ${hasComment ? 'has-comment' : ''}" onclick="toggleComment('${item.id}')">
+            ${hasComment ? '● комментарий' : '+ комментарий'}
+          </button>
+          <textarea class="item-comment-area" placeholder="Заметка по задаче..." oninput="changeComment('${item.id}', this.value)">${escapeHtml(st.comment || '')}</textarea>
+        </div>
+      </div>
+      <div class="item-meta"></div>
+    </div>
+  `;
+}
+
+function escapeHtml(s) {
+  const div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
+}
+
+/* ================================
+   STATS + UPDATES
+   ================================ */
+function sectionStats(section) {
+  const out = { total:0, done:0, partial:0, notdone:0, blocked:0, unknown:0, cancelled:0 };
+  section.items.forEach(it => {
+    const st = getItemState(it.id, it.s);
+    if (st.status === 'cancelled') return;
+    out.total++;
+    out[st.status]++;
+  });
+  return out;
+}
+
+function totalStats() {
+  const out = { total:0, done:0, partial:0, notdone:0, blocked:0, unknown:0 };
+  DATA.forEach(section => {
+    section.items.forEach(it => {
+      const st = getItemState(it.id, it.s);
+      if (st.status === 'cancelled') return;
+      out.total++;
+      out[st.status]++;
+    });
+  });
+  return out;
+}
+
+function updateStats() {
+  const ts = totalStats();
+  document.getElementById('stat-done').textContent = ts.done;
+  document.getElementById('stat-partial').textContent = ts.partial;
+  document.getElementById('stat-notdone').textContent = ts.notdone;
+  document.getElementById('stat-blocked').textContent = ts.blocked;
+  document.getElementById('stat-unknown').textContent = ts.unknown;
+  const pct = ts.total ? Math.round((ts.done / ts.total) * 100) : 0;
+  document.getElementById('overall-percent').textContent = pct + '%';
+  document.getElementById('progress-done-fill').style.width = (ts.done / ts.total * 100) + '%';
+  document.getElementById('progress-partial-fill').style.width = (ts.partial / ts.total * 100) + '%';
+  document.getElementById('progress-blocked-fill').style.width = (ts.blocked / ts.total * 100) + '%';
+
+  DATA.forEach(section => {
+    const stats = sectionStats(section);
+    const prog = stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
+    const txt = document.getElementById('sec-prog-text-' + section.id);
+    const bar = document.getElementById('sec-prog-bar-' + section.id);
+    if (txt) txt.textContent = stats.done + '/' + stats.total;
+    if (bar) bar.innerHTML = renderSectionProgressBar(stats);
+  });
+  renderSidebar();
+}
+
+/* ================================
+   INTERACTIONS
+   ================================ */
+function changeStatus(itemId, value) {
+  getItemState(itemId).status = value;
+  const el = document.querySelector(`[data-item-id="${itemId}"]`);
+  if (el) {
+    el.className = el.className.replace(/status-\w+/, 'status-' + value);
+    el.dataset.status = value;
+  }
+  saveToStorage();
+  updateStats();
+  applyFilter();
+}
+
+function changeComment(itemId, value) {
+  getItemState(itemId).comment = value;
+  const btn = document.querySelector(`[data-item-id="${itemId}"] .item-comment-toggle`);
+  if (btn) {
+    const has = value && value.trim();
+    btn.classList.toggle('has-comment', !!has);
+    btn.textContent = has ? '● комментарий' : '+ комментарий';
+  }
+  saveToStorage();
+}
+
+function toggleComment(itemId) {
+  const el = document.querySelector(`[data-item-id="${itemId}"]`);
+  if (el) el.classList.toggle('comment-open');
+}
+
+function toggleSection(id) {
+  const el = document.getElementById('sec-' + id);
+  if (el) el.classList.toggle('collapsed');
+}
+
+function expandAll() {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('collapsed'));
+}
+
+function collapseAll() {
+  document.querySelectorAll('.section').forEach(s => s.classList.add('collapsed'));
+}
+
+function resetAll() {
+  if (!confirm('Сбросить ВСЕ галочки и комментарии? Это действие нельзя отменить.')) return;
+  state = {};
+  localStorage.removeItem(STORAGE_KEY);
+  renderAll();
+  toast('Сброшено', 'success');
+}
+
+function exportJson() {
+  const data = {
+    project: 'lampardi05',
+    exportedAt: new Date().toISOString(),
+    state: state
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const d = new Date();
+  const stamp = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}_${String(d.getHours()).padStart(2,'0')}${String(d.getMinutes()).padStart(2,'0')}`;
+  a.href = url;
+  a.download = `lampardi05-checklist-${stamp}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Файл скачан', 'success');
+}
+
+function importJson(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (parsed.state && typeof parsed.state === 'object') {
+        state = parsed.state;
+        saveToStorage();
+        renderAll();
+        toast('Загружено из файла', 'success');
+      } else {
+        toast('Неверный формат файла', 'error');
+      }
+    } catch (err) {
+      toast('Ошибка чтения: ' + err.message, 'error');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function toast(msg, kind) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (kind || '');
+  setTimeout(() => { t.className = 'toast'; }, 2000);
+}
+
+function attachHandlers() {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      applyFilter();
+    };
+  });
+}
+
+function applyFilter() {
+  const f = currentFilter;
+  document.querySelectorAll('.item').forEach(el => {
+    let show = true;
+    if (f === 'all') show = true;
+    else if (f === 'p0' || f === 'p1') show = el.dataset.priority === f;
+    else if (f === 'manual') show = el.dataset.type === 'manual';
+    else show = el.dataset.status === f;
+    el.classList.toggle('hide', !show);
+  });
+  document.querySelectorAll('.section').forEach(sec => {
+    const visible = sec.querySelectorAll('.item:not(.hide)').length;
+    sec.classList.toggle('hide', visible === 0);
+  });
+}
+
+/* ================================
+   INIT
+   ================================ */
+renderAll();
+attachHandlers();
+
+// Keyboard shortcut: Ctrl+S — save
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault();
+    saveToStorage(true);
+  }
+});
+</script>
+</body>
+</html>

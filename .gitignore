@@ -34,3 +34,6 @@ deploy-preview.sh
 lampardi-stack.html
 lampardi_docs/
 .playwright-mcp/
+
+# Сценарий промо-ролика — внутренний документ
+promokod-video-scenariy.md

@@ -26,3 +26,11 @@ questions-for-gamza.md
 _cleanup.md
 figma-export/
 _archive-bitrix/
+
+# Остальное, что появилось в папке после перезапуска
+Frame 27.svg
+arrow-right.svg
+deploy-preview.sh
+lampardi-stack.html
+lampardi_docs/
+.playwright-mcp/

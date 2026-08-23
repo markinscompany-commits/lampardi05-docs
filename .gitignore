@@ -31,6 +31,9 @@ _archive-bitrix/
 Frame 27.svg
 arrow-right.svg
 deploy-preview.sh
+# ⚠️ deploy.sh называет сервер, пользователя и путь к ключу.
+# Репозиторий публичный — наружу это не уходит
+deploy.sh
 lampardi-stack.html
 lampardi_docs/
 .playwright-mcp/
